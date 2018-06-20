@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block body %}
+    <table class="table table-bordered">
+
+         <thead>
+         <th>客人姓名</th>
+           <th> 入住日期</th>
+         <th>离店日期</th>
+         <th>客人来源</th>
+          <th>消费</th>
+         </thead>
+{#             <tbody>#}
+{#                {%  for order in order_list %}#}
+{#            <tr >#}
+{#                <td>{{ order.customer }}</td>#}
+{#                 <td>{{ order.checkin }}</td>#}
+{#                 <td>{{ order.checkout }}</td>#}
+{#                <td>{{ order.customer.guest_source }}</td>#}
+{#                 <td>{{ order.Consumption }}</td>#}
+{##}
+{#            </tr>#}
+{#              {% endfor %}#}
+{#             </tbody>#}
+    <tbody>
+    {% for order in orders %}
+    <tr> <td>{{ order.customer }}</td>
+                 <td>{{ order.checkin }}</td>
+                 <td>{{ order.checkout }}</td>
+                <td>{{ order.customer.guest_source }}</td>
+                 <td>{{ order.Consumption }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+         </table>
+    <p>共{{ orders.paginator.count }}条数据</p>
+    <p>营业额{{ consumption_all }}元</p>
+
+    {% if orders.has_previous %}
+        <button>    <a href="/get-orders/{{ guest_source_id }}/{{ responsible_id }}/{{ orders.previous_page_number }}/{{ checkin }}/{{ checkout }}">上一页</a></button>
+        {% else %}
+        <button  class="disabled">上一页</button>
+    {% endif %}
+
+    {% for i in orders.paginator.page_range %}
+        {% if orders.number == i %}
+                  <button class="btn-danger"><a   href="/get-orders/{{ guest_source_id }}/{{ responsible_id }}/{{ i}}/{{ checkin }}/{{ checkout }}">第{{ i }}页</a></button>
+        {% else %}
+                  <button><a href="/get-orders/{{ guest_source_id }}/{{ responsible_id }}/{{ i }}/{{ checkin }}/{{ checkout }}">第{{ i }}页</a></button>
+
+        {% endif %}
+    {% endfor %}
+    {% if orders.has_next %}
+        <button >   <a href="/get-orders/{{ guest_source_id }}/{{ responsible_id }}/{{ orders.next_page_number }}/{{ checkin }}/{{ checkout }}">下一页 </a></button>
+        {% else %}
+        <button class="disabled">下一页</button>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class=" navbar-fixed-top navbar-inverse"  >
+    <h4 style="font-size: 25px" class="navbar-brand" >酒店管理系统</h4>
+     <div>
+      <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">欢迎你，{{ request.user }}！</a></li>|
+          <li><a href="/logout/">Logout   </a></li>
+
+      </ul>
+    </div>
+    </div>
+
+    <div class="container-fluid " style="margin-top:70px;padding-left:0px;"  >
+    <div class="sidebar affix"  style=" width:15%;height:100%; ">
+     <div  class="center-block leftorder" >
+       <a href="{% url 'index' %}"><strong>主页</strong></a>
+     </div>
+
+        {% for menu in request.user.role.menus.all %}
+            <div>
+        <div  class="center-block leftorder "  >
+         <strong><a href="{{ menu.url_name }}">{{ menu }}</a></strong>
+        </div>
+
+              </div>
+    {% endfor %}
+
+    </div>
+
+     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
+          {% block page-content %}
+                {% for menu in menu_list %}
+             <div class="functionmodel color_{{ menu.id }}" > <a href="{{ menu.url_name }}">{{ menu.name }}</a></div>
+              {% endfor %}
+              <div class="footer pull-right" style="font-size: 15px;color: deepskyblue">
+    <div><a>在线客服</a></div>
+    <div><a>联系方式</a></div>
+    </div>
+     </div>
+    </div>
+              <div>
+
+              </div>
+  {% endblock %}
+    {% block script %}
+{% endblock %}
+
+{% endblock %}

@@ -1,0 +1,138 @@
+
+.roomblock{
+    margin:10px 10px;
+    text-align:center ;
+    line-height:50px;
+    width: 100px;
+    height:100px;
+    float:left;
+    font-family: Arial;
+}
+.room{
+    border-radius:10%;
+}
+.roomoperator{
+    position:absolute;
+    z-index:200;
+    background-color: lightgoldenrodyellow;
+    height: 200px;
+    width: 200px;
+    left: 80px;
+    top:0px;
+}
+   .functionmodel{
+        margin:20px 20px;
+        line-height: 200px;
+        text-align: center;
+        width: 200px;height:200px;
+        border-radius:5%;
+        float:left;
+        font-size: 30px;
+        font-family: Arial;
+        background-color: #C6E2FF;
+
+    }
+    .leftorder{
+        height: 40px;
+        text-align: center;
+        line-height:30px;
+        background-color: whitesmoke;
+        border-radius:5%;
+        margin-top: 10px;
+        font-size: 20px;
+    }
+.quick_operator_block{
+    position:absolute;
+    z-index:300;
+    background-color:#CCCCCC;
+    height:500px;
+    width: 400px;
+    left: 80px;
+    top:0px;
+
+}
+.rightorder{
+    height: 50px;
+    text-align: center;
+    line-height:40px;
+    background-color:#FFFF99;
+    border-radius:5%;
+    margin-top: 20px;
+    font-size: 25px;
+}
+.mask{
+    z-index: 100;
+    height: 2000px;
+    position:fixed;
+    width:100%;
+    background-color: grey;
+    opacity: 0.3;
+}
+.sub-menu{
+    height: 30px;
+    width: 180px;
+    margin: 5px;
+    text-align: center;
+    font-size: 15px;
+    background-color: white;
+    border-radius:10%;
+}
+.status1{
+    background-color: #FF9999;
+
+}
+.status2{
+    background-color: #CCFF99;
+}
+.status3{
+    background-color: #CCCCFF;
+}
+.status4{
+    background-color: #FFFF66;
+}
+.status5{
+    background-color: #FFCCCC;
+}
+.status6{
+    background-color: #FF9966;
+}
+.status7{
+    background-color:#99CCCC;
+}
+.color_11{
+     background-color:#CCFF99;
+}
+.color_2{
+     background-color: #FF9999;
+}
+.color_9{
+     background-color: #FFFFCC;
+}
+.color_4{
+     background-color:#9999CC;
+}
+.color_5{
+     background-color:#CCFF66;
+}
+.color_9{
+     background-color:#D1EEEE;
+}
+.color_7{
+     background-color:#FFFF99;
+}
+.color_8{
+     background-color:#FFCCCC;
+}
+.color_10{
+     background-color:#99CC99;
+}
+.color_12{
+     background-color:#FFFF99;
+}
+.color_14{
+     background-color:#FF6666;
+}
+.center-block{
+    width: 200px;
+    line-height: 40px
+}

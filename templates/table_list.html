@@ -1,0 +1,67 @@
+{% extends 'index.html' %}
+{% load hotel_tags %}
+{% block left-block %}
+    {% for menu in request.user.role.menus.all %}
+      <div  class="center-block leftorder" >
+       <a href="{{ menu.url_name}}"><strong>{{ menu }}</strong></a>
+     </div>
+    {% endfor %}
+
+{% endblock %}
+{% block page-content %}
+    <div>{{ app_name }}
+{{ model_name }}</div>
+<button class="button"><a href="/{{ app_name }}/{{ model_name }}/add">添加</a></button>
+ <div>
+ <form class="" method="get">
+
+       {% for filter_field in model_admin.list_filters %}
+
+       <div class="col-lg-2">
+       {{ filter_field }}
+        <span>
+            {% render_filter_ele filter_field model_admin filter_conditions %}
+       </span>
+       </div>
+      {% endfor %}
+    <hr/>
+       <div class="row">
+      <div class="col-lg-3"　>
+
+        <input type="search" name="_q" class="form-control" style="margin-left:15px" \
+               value="{{ search_text }}"
+       placeholder="{% for search_field in model_admin.search_fields %}{{ search_field }},
+      {% endfor %} ">
+       </div>
+        <div class="col-lg-3">
+            <button type="submit" class="btn btn-success"  >检索</button>
+       </div>
+       </div>
+        </form>
+ </div>
+    <div class="panel-default">
+    <table class="table table-striped">
+    <thead>
+    <tr>
+      {% if model_admin.list_display %}
+         {% for column in model_admin.list_display %}
+            <th>
+                <a href="?_o={%  get_sorted_column  column current_sorted_column forloop.counter0 %}{% render_filtered_args  model_admin %}">
+                {{ column }}
+                {% render_sorted_arrow column  current_sorted_column %}
+                </a>
+            </th>
+         {% endfor %}
+       {% else %}
+         <th>{% get_model_name model_admin %}</th>
+       {% endif %}
+    </tr>
+     </thead>
+    <tbody>
+    {% for item in query_set %}
+        <tr>{% build_table_row item model_admin %}</tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+ {% endblock %}

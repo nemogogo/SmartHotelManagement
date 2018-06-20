@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class=" navbar-inverse navbar-fixed-top">
+    <h4 class="navbar-brand" >酒店管理系统</h4>
+     <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">{{ request.user }}</a></li>|
+          <li><a href="/logout/">Logout</a></li>
+      </ul>
+    </div>
+    </div>
+
+ <div class="container-fluid " style="margin-top: 90px;">
+
+    <div class="col-sm-3 col-md-2 sidebar affix" >
+      <ul class="nav nav-sidebar ">
+        <li><a href="{% url 'index' %}"><strong>主页</strong></a></li>
+
+      </ul>
+
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
+
+    {% block page-content %}
+        <h1>Hello {{ request.user.username }} !</h1>
+        <div class="panel-success">
+            <table class="table">
+{% for app_name,table_name in site.enabled_admins.items %}
+               <tbody>
+     {% for model_name in table_name%}
+                <tr> <td><a href="/{{ app_name }}/{{ model_name }}/"  >{{ model_name }}</a></td>
+                <td><a  href="/{{ app_name }}/{{ model_name }}/" )>查看</a></td></tr>
+            {% endfor %}
+                </tbody>
+            {% endfor %}
+</table>
+        </div>
+
+    {% endblock %}
+    </div>
+
+</div>
+
+{% block script %}
+
+{% endblock %}
+{% endblock %}

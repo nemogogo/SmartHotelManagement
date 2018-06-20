@@ -1,0 +1,11 @@
+{% extends 'index.html' %}
+
+{% block page-content %}
+<form method="post">
+{% csrf_token %}
+{{ form.as_p }}
+    <button type="submit"  >提交</button>
+    <button>返回</button>
+</form>
+
+{% endblock %}

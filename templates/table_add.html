@@ -1,0 +1,57 @@
+{% extends 'index.html' %}
+{% block page-content %}
+
+    <form method="post" >
+        {% csrf_token %}
+
+
+        <p style="color:red"> {{ form.errors }}</p>
+        <p style="color:red"> {{  error_dict }}</p>
+
+        {{ form.as_table }}
+
+
+        <input type="submit" name='submit' value="提交">
+        <input type="submit"  name='submit' value="继续添加">
+        <button class="button" ><a href="/{{ app_name }}/{{ model_name }}">返回</a></button>
+    </form>
+
+
+ {% endblock %}
+{% block script %}
+    <script>
+
+    $( function () {
+
+          $('#id_book_resource_type').change(function () {
+              var source=document.getElementById('id_book_resource');
+              var newselect=document.createElement('select');
+              newselect.id='id_book_resource';
+              delete source
+              var options=source.children;
+              {#for (var k=0;k<options.length;k++){#}
+              {#    source.removeChild(options[k]);#}
+              {#    k--;}#}
+              {% for k in   form.book_r %}
+
+                  var type_id={{ k.source_type_id }};
+
+                   if (type_id==this.value){
+                      var option=document.createElement('options');
+                       option.innerHTML='{{ k }}';
+                       option.setAttribute('value', {{ k.id }});
+                       newselect.appendChild(option);
+                       {#$('#id_book_resource').append(option);#}
+                  }
+
+              {% endfor %}
+          this.nextElementSibling(newselect);
+
+    })
+    }
+
+    )
+
+
+    </script>
+{% endblock %}

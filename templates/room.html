@@ -1,0 +1,152 @@
+{% extends 'index.html' %}
+{% load hotel_tags %}
+
+{% block page-content %}
+
+     <div class="col-md-10 col-sm-10 col-lg-10">
+      <div>
+{% for menu in request.user.role.menus.all %}
+  <div class="btn-group" style="margin: 10px 10px">
+	<button type="button" class="btn btn-default dropdown-toggle"
+			data-toggle="dropdown">
+		{{ menu }}<span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu" role="menu">
+        {% for sub_menu in menu.sub_menus.all %}
+		<li><a href="{{ sub_menu.url_name }}">{{ sub_menu}}</a></li>
+            {% endfor %}
+	</ul>
+	</div>
+  {% endfor %}
+      <div></div>
+      </div>
+
+     {% for item in room_query_set %}
+    <div style="position:relative " class="roomblock">
+     <div  class=" quick_operator_block hidden ">
+         <form action="/quick_checkin/{{ item.id }}" method="post" style="width: 80%;margin:20px auto; ">
+             {% csrf_token %}
+             <table class="table">
+
+             </table>
+              <div class="form-control"><label>离店日期</label><input name="pre_checkout" type="date"></div>
+             <button type="button" class="btn btn-danger pull-right " onclick="cancel(this)" class="cancel" style="margin-right: 20px">取消</button>
+               <button type="button submit" class="btn btn-primary pull-right">提交</button>
+         </form>
+     </div>
+        <div class="status{{ item.status.id}} room"  id="{{ item.id }}"><a href="/hotel/room/{{ item.id }}/change">{{ item}}</a><p><a>{{ item.status }}</a></p></div>
+        {% if item.status.id == 1 %}
+       <div class="roomoperator hidden" style="height: 400px">
+
+          {% render_model_content request item %}
+    </div>
+        {% else %}
+            <div class="roomoperator hidden" >
+          {% render_model_content request item %}
+      </div>
+    {% endif %}
+         </div>
+    {% endfor %}
+     </div>
+
+    <div class="col-sm-2 col-md-2 sidebar" >
+<div class="rightorder"><strong><a href="/room-o-o-o-o">所有房间</a></strong></div>
+
+      <div class="rightorder" data-toggle="collapse"
+		data-target="#building"><strong><a href="#">所有楼层</a></strong></div>
+   <div id="building">
+   {% for item in building_query_set %}
+      <ul class="nav nav-sidebar " id="building{{ item.id }}" >
+        <li><a href="room-{{ item.id }}-o-{{ status_id }}-{{ type_id }}"><strong>{{ item }}</strong></a></li>
+         <ul  >
+        {% for i in item.floor_set.all %}
+         <li ><a href="room-{{ item.id }}-{{ i.id }}-{{ status_id }}-{{ type_id }}">{{ i.name }}</a></li>
+          {% endfor %}
+         </ul>
+      </ul>
+  {% endfor %}
+   </div>
+ <div class="rightorder" data-toggle="collapse"
+		data-target="#status"><strong><a href="#">所有房态</a></strong></div>
+ <div id="status">
+    {% for item in status_query_set %}
+
+      <ul class="nav nav-sidebar" >
+        <li><a href=" room-{{building_id }}-{{ floor_id }}-{{ item.id }}-{{ type_id }}">
+              <strong>{{ item }}</strong>
+        </a>
+        </li>
+
+      </ul>
+
+{% endfor %}
+ </div>
+<div class="rightorder" data-toggle="collapse"
+		data-target="#type"><strong><a href="#">所有房型</a></strong></div>
+ <div id="type">
+{% for item in type_query_set %}
+      <ul class="nav nav-sidebar">
+        <li><a href=" room-{{building_id }}-{{ floor_id }}-{{ status_id }}-{{ item.id }}">
+              <strong>{{ item }}</strong>
+        </a>
+        </li>
+
+      </ul>
+{% endfor %}
+ </div>
+    </div>
+{% endblock %}
+ {% block script %}
+     <script >
+    window.onload=function (ev) {
+         $('.room').click(function(){
+                   var  operator=$(this).siblings('.roomoperator')[0];
+                   $.each($(this).parent().siblings(),function () {
+                        $(this.lastElementChild).addClass('hidden');
+                   })
+                   if ($(operator).hasClass('hidden')){
+                        $(operator).removeClass('hidden');}
+                   else{
+                        $(operator).addClass('hidden');
+                 }
+                   });
+         $('.quick_checkin').click(function () {
+             var id= $(this).parent().parent().parent().children('.room').attr('id');
+             url='http://127.0.0.1:8000/quick_checkin/'+String(id);
+             $(this).parent().parent().parent().children('.roomoperator').addClass('hidden');
+             var quick_checkin=$(this).parent().parent().parent().children('.quick_operator_block').first();
+             $(quick_checkin).removeClass('hidden');
+             $.ajax(
+                 {
+                     url:url,
+                     type:'GET',
+                     success:function (arg) {
+                         $(quick_checkin).children('form').children('table').empty().append(arg);
+                     }
+                 }
+             )
+         });
+         $('.add_consumption').click(function () {
+              var id= $(this).parent().parent().parent().children('.room').attr('id');
+             url='http://127.0.0.1:8000/add_consumption/'+String(id);
+             $(this).parent().parent().parent().children('.roomoperator').addClass('hidden');
+             var add_consumption=$(this).parent().parent().parent().children('.quick_operator_block').first();
+             $(add_consumption).removeClass('hidden');
+             $(add_consumption).children('form').attr('action',url);
+             ele="<tr><th><label for=\"id_name\">消费项目:</label></th><td><input type=\"text\" name=\"name\" maxlength=\"64\" class=\"form-control\" required=\"\" id=\"id_name\"></td></tr><tr><th><label for=\"id_amount\">消费金额:</label></th><td><input type=\"number\" name=\"amount\" step=\"any\" class=\"form-control\" id=\"id_amount\"></td></tr>"
+                         {#$(add_consumption).children('form').append("<input>");#}
+             $(add_consumption).children('form').children('table').empty().append(ele);
+             }
+         )
+
+
+
+    };
+    function cancel(av){
+             console.log($(av).parent().parent().addClass('hidden'));
+         }
+
+     </script>
+
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends  'index.html' %}
+ {% block page-content %}
+     <div style="text-align: right">
+     <button class="button daily-report "><a href="/analysis">图表分析</a></button>
+     <button class="button daily-report "><a>打印月报</a></button>
+     </div>
+    <div><p><strong>昨日营业报表</strong></p>
+
+    {% csrf_token %}
+    <label>客源</label>
+    <select name="guest_source">
+    <option value="0">全部</option>
+{% for guest_resource in guestsource_list %}
+    {% if guest_resource.id == guest_resource_id %}
+    <option selected="selected" value="{{ guest_resource.id }}">{{ guest_resource }}</option>
+    {% else %}
+    <option value="{{ guest_resource.id }}">{{ guest_resource }}</option>
+    {% endif %}
+        {% endfor %}
+    </select>
+    <label>负责人</label>
+    <select   name="reponsible">
+      <option value="0">全部</option>
+        {% for responsible in responsible_list %}
+            {% if responsible.id == responsible_id %}
+            <option  selected="selected" value="{{ responsible.id }}">{{ responsible.name }}</option>
+            {% else %}
+            <option value="{{ responsible.id }}">{{ responsible.name }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+
+    <input type="date" placeholder="入住日期" name="checkin" value="{{ checkindate }}">
+    <input type="date" placeholder="离店日期" name="checkout" value="{{ checkoutdate }}">
+
+    <button type="submit" class="get-order">选择</button>
+
+    <button class="btn-primary pull-right">打印报表</button>
+    </div>
+         <div>
+             <iframe src="/get-orders/0/0/1/{{ checkindate }}/{{ checkoutdate }}" class="col-sm-8 iframe" style="width:1000px;height: 800px ">
+
+
+
+</iframe>
+         </div>
+
+{% endblock %}
+{% block script %}
+    <script>
+     $('.get-order').click(function () {
+         var guest_source_id=$('[name="guest_source"]').val();
+         var responsible_id=$('[name="reponsible"]').val();
+         var checkin=$('[name="checkin"]').val();
+         var  checkout=$('[name="checkout"]').val();
+
+         var url='/get-orders/'+String(guest_source_id)+'/'+String(responsible_id)+'/1/'+checkin+'/'+checkout;
+         $('.iframe').attr('src',url);
+     })
+    </script>
+{% endblock %}
